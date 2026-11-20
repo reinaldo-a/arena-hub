@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
+from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
 
@@ -69,7 +70,11 @@ def modalidade_delete(request, pk):
     modalidade = get_object_or_404(Modalidade, pk=pk)
     if request.method == 'POST':
         nome = str(modalidade)
-        modalidade.delete()
+        try:
+            modalidade.delete()
+        except ProtectedError:
+            messages.error(request, f'Não é possível excluir "{nome}": existem campeonatos vinculados a ela.')
+            return redirect('modalidades:detail', pk=pk)
         messages.success(request, f'Modalidade "{nome}" excluída com sucesso.')
         return redirect('modalidades:list')
 

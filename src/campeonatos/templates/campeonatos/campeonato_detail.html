@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ campeonato.nome }} | ArenaHub{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'campeonatos:list' %}">Campeonatos</a></li>
+        <li class="breadcrumb-item active">{{ campeonato.nome }}</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h1 class="h4 mb-0">{{ campeonato.nome }}</h1>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">ID</dt>
+            <dd class="col-sm-9">{{ campeonato.id }}</dd>
+
+            <dt class="col-sm-3">Modalidade</dt>
+            <dd class="col-sm-9">
+                <a href="{% url 'modalidades:detail' campeonato.modalidade.pk %}">{{ campeonato.modalidade }}</a>
+            </dd>
+
+            <dt class="col-sm-3">Data de início</dt>
+            <dd class="col-sm-9">{{ campeonato.data_inicio|date:"d/m/Y" }}</dd>
+
+            <dt class="col-sm-3">Data de término</dt>
+            <dd class="col-sm-9 mb-0">{{ campeonato.data_fim|date:"d/m/Y" }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer bg-white d-flex gap-2">
+        <a href="{% url 'campeonatos:list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+        {% if perms.campeonatos.change_campeonato %}
+        <a href="{% url 'campeonatos:update' campeonato.pk %}" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        {% endif %}
+        {% if perms.campeonatos.delete_campeonato %}
+        <a href="{% url 'campeonatos:delete' campeonato.pk %}" class="btn btn-danger ms-auto">
+            <i class="bi bi-trash"></i> Excluir
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

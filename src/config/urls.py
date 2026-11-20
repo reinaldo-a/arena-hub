@@ -7,5 +7,6 @@ urlpatterns = [
     path('', home, name='home'),
     path('contas/', include('contas.urls')),
     path('modalidades/', include('modalidades.urls')),
+    path('campeonatos/', include('campeonatos.urls')),
     path('admin/', admin.site.urls),
 ]

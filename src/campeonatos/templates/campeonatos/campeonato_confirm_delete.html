@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir {{ campeonato.nome }} | ArenaHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger shadow-sm">
+            <div class="card-body">
+                <h1 class="h4 text-danger"><i class="bi bi-exclamation-triangle"></i> Excluir campeonato</h1>
+                <p>Tem certeza que deseja excluir o campeonato <strong>{{ campeonato.nome }}</strong>? Esta ação não pode ser desfeita.</p>
+                <form method="post" class="d-flex gap-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Sim, excluir</button>
+                    <a href="{% url 'campeonatos:detail' campeonato.pk %}" class="btn btn-outline-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

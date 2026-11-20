@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} | ArenaHub{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'campeonatos:list' %}">Campeonatos</a></li>
+        {% if campeonato %}
+        <li class="breadcrumb-item"><a href="{% url 'campeonatos:detail' campeonato.pk %}">{{ campeonato.nome }}</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active">{{ titulo }}</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">{{ titulo }}</h1>
+
+        {% if not form.fields.modalidade.queryset.exists %}
+        <div class="alert alert-warning">
+            Nenhuma modalidade cadastrada.
+            {% if perms.modalidades.add_modalidade %}
+            <a href="{% url 'modalidades:create' %}" class="alert-link">Cadastre uma modalidade</a> antes de criar o campeonato.
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                {% for field in form %}
+                <div class="mb-3 {% if field.name == 'data_inicio' or field.name == 'data_fim' %}col-md-6{% else %}col-12{% endif %}">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="invalid-feedback d-block">{{ field.errors|join:" " }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar</button>
+                <a href="{% if campeonato %}{% url 'campeonatos:detail' campeonato.pk %}{% else %}{% url 'campeonatos:list' %}{% endif %}"
+                   class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
