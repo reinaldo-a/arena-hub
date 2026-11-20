@@ -6,6 +6,8 @@ from django.shortcuts import redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_http_methods, require_POST
 
+from .forms import CadastroForm
+
 
 @login_required
 def home(request):
@@ -31,6 +33,21 @@ def login_view(request):
         return redirect('home')
 
     return render(request, 'contas/login.html', {'form': form, 'next': proxima})
+
+
+@require_http_methods(['GET', 'POST'])
+def cadastro(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    form = CadastroForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        usuario = form.save()
+        login(request, usuario)
+        messages.success(request, f'Conta criada com sucesso. Bem-vindo(a), {usuario.first_name}!')
+        return redirect('home')
+
+    return render(request, 'contas/cadastro.html', {'form': form})
 
 
 @require_POST
