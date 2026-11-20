@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+    <h1 class="display-6 fw-bold">Bem-vindo(a) ao ArenaHub</h1>
+    <p class="lead text-muted">Gerencie modalidades, campeonatos, equipes, jogadores e partidas em um só lugar.</p>
+</div>
+
+<div class="row g-3">
+    <div class="col-sm-6 col-lg-4">
+        <a href="{% url 'modalidades:list' %}" class="card h-100 shadow-sm text-decoration-none text-reset">
+            <div class="card-body">
+                <h2 class="h5"><i class="bi bi-dribbble text-primary"></i> Modalidades</h2>
+                <p class="text-muted mb-0">Esportes disputados nos campeonatos.</p>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

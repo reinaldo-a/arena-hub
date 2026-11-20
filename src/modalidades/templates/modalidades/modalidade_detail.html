@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ modalidade.nome }} | ArenaHub{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'modalidades:list' %}">Modalidades</a></li>
+        <li class="breadcrumb-item active">{{ modalidade.nome }}</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h1 class="h4 mb-0">{{ modalidade.nome }}</h1>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">ID</dt>
+            <dd class="col-sm-9">{{ modalidade.id }}</dd>
+
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9 mb-0">{{ modalidade.nome }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer bg-white d-flex gap-2">
+        <a href="{% url 'modalidades:list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+        {% if perms.modalidades.change_modalidade %}
+        <a href="{% url 'modalidades:update' modalidade.pk %}" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        {% endif %}
+        {% if perms.modalidades.delete_modalidade %}
+        <a href="{% url 'modalidades:delete' modalidade.pk %}" class="btn btn-danger ms-auto">
+            <i class="bi bi-trash"></i> Excluir
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

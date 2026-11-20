@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} | ArenaHub{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'modalidades:list' %}">Modalidades</a></li>
+        {% if modalidade %}
+        <li class="breadcrumb-item"><a href="{% url 'modalidades:detail' modalidade.pk %}">{{ modalidade.nome }}</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active">{{ titulo }}</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 mb-4">{{ titulo }}</h1>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="invalid-feedback d-block">{{ field.errors|join:" " }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Salvar</button>
+                <a href="{% if modalidade %}{% url 'modalidades:detail' modalidade.pk %}{% else %}{% url 'modalidades:list' %}{% endif %}"
+                   class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+from django.contrib.messages import constants as message_constants
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'contas',
+    'modalidades',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +59,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,6 +128,20 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# Autenticação
+
+LOGIN_URL = 'contas:login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'contas:login'
+
+
+# Mensagens: mapeia o nível "error" do Django para a classe "danger" do Bootstrap
+
+MESSAGE_TAGS = {
+    message_constants.ERROR: 'danger',
+}
 
 
 # Email
